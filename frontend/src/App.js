@@ -92,7 +92,7 @@ function App() {
           value={desc}
           onChange={(e) => setDesc(e.target.value)}
         />
-        <button onClick={addOrUpdateItem}>{ selected ? "Update": "Add"}</button>
+        <button onClick={addOrUpdateItem} data-testid="add-update-cta" >{ selected ? "Update": "Add"}</button>
         <p style={{ color:'red' }}>{error}</p>
       </div>
       

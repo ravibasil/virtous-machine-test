@@ -35,4 +35,10 @@ app.delete("/items/:id", (req, res)=> {
     res.json({ message: "Deleted" })
 })
 
-app.listen(5000, () => console.log("Server is listening on 5000"))
+// Export for testing
+module.exports = app;
+
+// Run server only if not testing
+if(require.main === module){
+    app.listen(5000, () => console.log("Server is listening on 5000"))
+}
