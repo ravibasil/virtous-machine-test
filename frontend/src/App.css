@@ -1,18 +1,66 @@
 .App {
+  max-width: 600px;
+  margin: 40px auto;
+  font-family: sans-serif;
+  padding: 0 20px;
+}
+
+h2 {
   text-align: center;
 }
 
 .form-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
 }
 
+.form-container input {
+  flex: 1;
+  padding: 8px;
+}
+
+.form-container button {
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.form-error {
+  color: red;
+  width: 100%;
+  margin: 5px 0 0 0;
+}
+
+.items-container {
+  list-style: none;
+  padding: 0;
+}
 
 .list-item {
   display: flex;
-  gap: 10px;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  padding: 15px;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.item-content {
+  flex: 1;
+}
+
+.item-title {
+  font-weight: bold;
+}
+
+.item-desc {
+  margin-left: 5px;
+}
+
+.item-actions button {
+  margin-left: 10px;
+  padding: 6px 12px;
+  cursor: pointer;
 }

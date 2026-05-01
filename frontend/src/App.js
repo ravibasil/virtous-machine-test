@@ -19,34 +19,34 @@ function App() {
       const data = await res.json();
       setItems(data);
       setError('');
-    }catch(error){
+    } catch (error) {
       setError("API failed")
     }
   };
 
   useEffect(() => {
     fetchItems()
-  },[])
+  }, [])
 
   // Create
   const addOrUpdateItem = async () => {
-    if(!title){
+    if (!title) {
       setError("Title required")
       return;
     }
-    
-  try{
-    let res;
-    if(selected){
-      res = await fetch(`${API}/${selected.id}`,{
-        method: "PUT",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ title, desc })
-      })
-    }else {
-       res = await fetch(API,{
+
+    try {
+      let res;
+      if (selected) {
+        res = await fetch(`${API}/${selected.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title, desc })
+        })
+      } else {
+        res = await fetch(API, {
           method: "POST",
-          headers: {"Content-Type": "application/json"},
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ title, desc })
         })
       }
@@ -57,7 +57,7 @@ function App() {
       setDesc('')
       setSelectedItem(null)
       fetchItems()
-    }catch(error){
+    } catch (error) {
       setError("API failed")
     }
 
@@ -65,10 +65,10 @@ function App() {
 
   const deleteItem = async (id) => {
     try {
-      const res = await fetch(`${API}/${id}`, {method:'DELETE'})
+      const res = await fetch(`${API}/${id}`, { method: 'DELETE' })
       if (!res.ok) throw new Error('API request failed');
       fetchItems()
-     }catch(error){
+    } catch (error) {
       setError("API failed")
     }
   }
@@ -84,31 +84,35 @@ function App() {
       <h2> CRUD App </h2>
 
       <div className='form-container'>
-      {/* Form */}
-        <input 
+        {/* Form */}
+        <input
           placeholder='Title'
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-        <input 
+        <input
           placeholder='Description'
           value={desc}
           onChange={(e) => setDesc(e.target.value)}
         />
-        <button onClick={addOrUpdateItem} data-testid="add-update-cta" >{ selected ? "Update": "Add"}</button>
-        <p style={{ color:'red' }}>{error}</p>
+        <button onClick={addOrUpdateItem} data-testid="add-update-cta" >{selected ? "Update" : "Add"}</button>
+        {error && <p className="form-error">{error}</p>}
       </div>
-      
+
       {/* List */}
       <ul className='items-container'>
         {
           items.map(item => {
-            return(
-            <li className='list-item' key={item.id}>
-              <b>{item.title}</b> - {item.desc}
-              <button onClick={() => deleteItem(item.id)}>Delete</button>
-              <button onClick={() => handleUpdateItemCta(item)}>Update</button>
-            </li>)
+            return (
+              <li className='list-item' key={item.id}>
+                <div className="item-content">
+                  <span className="item-title">{item.title}</span> - <span className="item-desc">{item.desc}</span>
+                </div>
+                <div className="item-actions">
+                  <button onClick={() => handleUpdateItemCta(item)}>Edit</button>
+                  <button onClick={() => deleteItem(item.id)}>Delete</button>
+                </div>
+              </li>)
           })
         }
       </ul>
