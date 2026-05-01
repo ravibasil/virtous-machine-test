@@ -1,7 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
 import { useEffect, useState } from 'react';
-import { Update } from '@material-ui/icons';
 
 const API = 'http://localhost:5000/items'
 
@@ -16,10 +15,12 @@ function App() {
   const fetchItems = async () => {
     try {
       const res = await fetch(API);
+      if (!res.ok) throw new Error('Failed to fetch');
       const data = await res.json();
       setItems(data);
+      setError('');
     }catch(error){
-      setError("API faild")
+      setError("API failed")
     }
   };
 
@@ -35,38 +36,40 @@ function App() {
     }
     
   try{
+    let res;
     if(selected){
-      await fetch(`${API}/${selected.id}`,{
+      res = await fetch(`${API}/${selected.id}`,{
         method: "PUT",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({ title, desc })
       })
     }else {
-       await fetch(API,{
+       res = await fetch(API,{
           method: "POST",
           headers: {"Content-Type": "application/json"},
           body: JSON.stringify({ title, desc })
         })
       }
 
+      if (!res.ok) throw new Error('API request failed');
 
       setTitle('')
       setDesc('')
       setSelectedItem(null)
       fetchItems()
     }catch(error){
-      setError("API faild")
+      setError("API failed")
     }
 
   }
 
   const deleteItem = async (id) => {
     try {
-
-      await fetch(`${API}/${id}`, {method:'DELETE'})
+      const res = await fetch(`${API}/${id}`, {method:'DELETE'})
+      if (!res.ok) throw new Error('API request failed');
       fetchItems()
      }catch(error){
-      setError("API faild")
+      setError("API failed")
     }
   }
 

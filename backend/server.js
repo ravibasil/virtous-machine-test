@@ -10,7 +10,11 @@ let items = []
 
 // Create
 app.post("/items", (req, res) => {
-    const item = { id: Date.now(), ...req.body }
+    const { title, desc } = req.body;
+    if (!title) {
+        return res.status(400).json({ error: "Title is required" });
+    }
+    const item = { id: Date.now(), title, desc }
     items.push(item)
     res.status(201).json(item)
 })
@@ -23,13 +27,22 @@ app.get("/items", (req, res) => {
 // Update
 app.put("/items/:id", (req, res) => {
     const id = Number(req.params.id);
-    items = items.map(i => i.id === id ? { ...i, ...req.body }: i)
-    res.json({ message: "Updated" })
+    const itemIndex = items.findIndex(i => i.id === id);
+    if (itemIndex === -1) {
+        return res.status(404).json({ error: "Item not found" });
+    }
+    const { title, desc } = req.body;
+    items[itemIndex] = { ...items[itemIndex], title, desc };
+    res.json(items[itemIndex])
 })
 
 // Delete
 app.delete("/items/:id", (req, res)=> {
     const id = Number(req.params.id);
+    const itemIndex = items.findIndex(i => i.id === id);
+    if (itemIndex === -1) {
+        return res.status(404).json({ error: "Item not found" });
+    }
     items = items.filter(i => i.id !== id)
     
     res.json({ message: "Deleted" })
